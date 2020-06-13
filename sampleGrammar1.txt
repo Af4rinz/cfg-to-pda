@@ -1,0 +1,6 @@
+S
+S,X,Y
+a,b
+S->aSX|bSY|λ
+X->b
+Y->a
