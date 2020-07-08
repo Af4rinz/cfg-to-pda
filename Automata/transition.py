@@ -1,11 +1,17 @@
 import Utils.constants as constant
+from .state import State
 
 class Transition:
     inputSymbol = ''
+    currState = ''
+    nextState = ''
     popSymbol = ''
     pushSymbols = []
-    def __init__(self, inputSymbol, popSymbol, pushSymbols):
+    
+    def __init__(self, inputSymbol, currState, nextState, popSymbol, pushSymbols):
         self.inputSymbol = inputSymbol
+        self.currState = currState
+        self.nextState = nextState
         self.popSymbol = popSymbol
         self.pushSymbols = pushSymbols
     

@@ -1,57 +1,31 @@
 from Utils.Exceptions import IllegalVariableException
 import Utils.constants as constant
-class Grammar(object):
-    nTerminal = 0
-    nState = 0
-    linearity = 0 #-1 = ll, 1 =rl, 2 = regular
-
-    def __init__(self):
-        self.terminals = []
-        self.states = []
-        self.startVar = ''
-        self.fullGrammar = {}
-    
-    def setNTerminal(self):
-        Grammar.nTerminal = len(self.terminals)
-    
-    def setNState (self):
-        Grammar.nState = len(self.states)
-    
-    def display(self):
-        st = "Full grammar is: "
-        for state in self.fullGrammar[state]:
-            rules = ''
-            for r in self.fullGrammar[state]:
-                rules = rules + ' | ' + r #extend rules by |
-
-            rules = rules.lstrip('|') #remove first extra |
-            st = st + state + ' -> ' + rules + '\n'
-        return st
-
+from Automata.state import State
+from Automata.transition import Transition
 
 def importGrammar (File):
     file = open(File,'r')
     data = file.readlines()
-    grammar = Grammar()
-
-    initState = data[0].rstrip()
-    states = data[1].rstrip()
-    terminals = data[2].rstrip()
     
-    grammar.startVar = initState
-    grammar.states = states.split(',')
-    grammar.terminals = terminals.split(',')
+    transitions = []
+    initStateSym = data[0].rstrip()
+    # states = data[1].rstrip()
+    terminals = data[1].rstrip()
     
-    grammar.setNState()
-    grammar.setNTerminal()
+    initState = State("Q0", True, False, [])
+    midState = State("Q1", False, False, [])
+    finalState = State("Q2", False, True, [])
     
-    for idx in range(3, 3 + grammar.nState):
+    terminals = terminals.split(',')
+    
+    for idx in range(2, data.__len__()):
         rule = data[idx].rstrip()
         for character in rule:
             if character == '-' or character == '>' or character == '|':
                 pass
-            elif character not in grammar.terminals and character not in grammar.states and character != constant.LAMBDA:
+            elif character not in terminals and (not character.isupper()) and character != constant.LAMBDA:
                 raise IllegalVariableException(character, rule)
+        
         #left hand side: state        
         lhs = rule[:rule.find('-')]
         #right hand side: productions
@@ -59,6 +33,21 @@ def importGrammar (File):
         #split productions
         rhs = rhs.split('|')
         #assign productions to each state
-        grammar.fullGrammar[lhs]=rhs
+        for t in rhs:
+            trans = Transition(
+                t[:1], #terminal
+                midState,
+                midState,
+                lhs, #pop rule symbol on transition
+                list(t[1:]) if len(list(t[1:])) > 0 else [constant.LAMBDA]
+            )
+            transitions.append(trans)
 
-    return grammar
+    # initial state & transition
+    init = Transition(constant.LAMBDA, initState, midState, constant.EPSILON, [initStateSym, constant.EPSILON])    
+    transitions.append(init)
+    # final state transition upon encountering epsilon
+    final = Transition(constant.LAMBDA, midState, finalState, constant.EPSILON, [constant.EPSILON])
+    transitions.append(final)
+    states = [initState, midState, finalState]
+    return states, transitions
