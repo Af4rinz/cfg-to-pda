@@ -1,0 +1,5 @@
+S
+a,b
+S->aSX|bSY|b
+X->b
+Y->a

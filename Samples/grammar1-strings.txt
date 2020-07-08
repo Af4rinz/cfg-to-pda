@@ -1,0 +1,5 @@
+1. "abb" accept
+2. "aba" reject
+3. "baabbba" accept
+4. "bbaba" reject
+5. "aaabbbb"
