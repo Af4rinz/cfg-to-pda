@@ -50,6 +50,7 @@ class Automaton:
         idx = stack.__len__() -1
         top = stack[idx]
         finishProcess = False
+        # next character to be processed
         if len(string) > 0:
             inputSym = string[0]
         else: inputSym = constant.LAMBDA
@@ -67,18 +68,21 @@ class Automaton:
                     if sym == constant.LAMBDA:
                         continue
                     newStack.append(sym)
-                
-                print(newStack)
-                # finishProcess, state = self.matchStr(string[1:] if tr.inputSymbol!=constant.LAMBDA else string[:], newStack, tr.nextState)
+                if debug:
+                    print(newStack)
+                # don't truncate if input symbol was lambda
                 if (tr.inputSymbol == constant.LAMBDA):
                     finishProcess, state = self.matchStr(string[:], tr.nextState, newStack)
                 else:
                     finishProcess, state = self.matchStr(string[1:], tr.nextState, newStack)
                 visited = True #mark path traversed
                 if state.isFinal and finishProcess: break
+
+
         if not visited: 
             # mark string processing finished only if string is reduced to base size 0
             finishProcess = (len(string) == 0) 
+
         return finishProcess, state
 
 

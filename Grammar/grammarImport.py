@@ -9,7 +9,7 @@ def importGrammar (File):
     
     transitions = []
     initStateSym = data[0].rstrip()
-    # states = data[1].rstrip()
+    
     terminals = data[1].rstrip()
     
     initState = State("Q0", True, False, [])
