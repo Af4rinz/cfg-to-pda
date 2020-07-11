@@ -19,7 +19,8 @@ def importGrammar (File):
     terminals = terminals.split(',')
     
     for idx in range(2, data.__len__()):
-        rule = data[idx].rstrip()
+        rule = data[idx].strip()
+        print(rule)
         for character in rule:
             if character == '-' or character == '>' or character == '|':
                 pass

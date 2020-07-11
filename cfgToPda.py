@@ -3,7 +3,7 @@ import Utils.constants as constant
 from Automata.state import State
 from Automata.transition import Transition
 
-# debug = False # debug mode, shows stack contents while parsing
+debug = False # debug mode, shows stack contents while parsing
 
 class Automaton:
     def __init__(self, states, transitions):
@@ -35,7 +35,7 @@ class Automaton:
     def checkMembership(self, string):
         stack = []
         stack.append(constant.EPSILON)
-        # check initial state
+        # find initial state
         for state in self.states:
             if (state.isInitial):
                 currState = state
@@ -75,7 +75,7 @@ class Automaton:
                 else:
                     finishProcess, state = self.matchStr(string[1:], tr.nextState, newStack)
                 visited = True #mark path traversed
-                if state.isFinal: break
+                if state.isFinal and finishProcess: break
         if not visited: 
             # mark string processing finished only if string is reduced to base size 0
             finishProcess = (len(string) == 0) 
