@@ -90,9 +90,10 @@ class Automaton:
 if __name__ == "__main__":
     path = input("Path for grammar: ").strip()
     states, transitions = Grammar.importGrammar(path)
-    # states, transitions = 
+    
     pda = Automaton(states, transitions)
     pda.toPda()
+    
     while(True):
         print("Parse targets? (Y/N)")
         inp = input().strip().capitalize()
