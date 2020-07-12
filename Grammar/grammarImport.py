@@ -20,7 +20,7 @@ def importGrammar (File):
     
     for idx in range(2, data.__len__()):
         rule = data[idx].strip()
-        print(rule)
+        rule = rule.replace(" ", "")
         for character in rule:
             if character == '-' or character == '>' or character == '|':
                 pass
