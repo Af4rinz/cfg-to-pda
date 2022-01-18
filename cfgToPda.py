@@ -44,7 +44,7 @@ class Automaton:
         t = (state.isFinal and finishProcess)
         return t
 
-    # has expontential time complexity, but is useful for small strings |w| <= 50
+    # has exponential time complexity, but is useful for small strings |w| <= 50
     def matchStr(self, string, currState, stack):
         # print(currState)
         idx = stack.__len__() -1
